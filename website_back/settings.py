@@ -29,7 +29,10 @@ SECURE_SSL_REDIRECT = False
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 ALLOWED_HOSTS = ["wellmay.uz", "www.wellmay.uz", "127.0.0.1", "localhost"]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://wellmay.uz",
+    "https://www.wellmay.uz",
+]
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
