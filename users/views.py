@@ -662,6 +662,7 @@ class YouTubeToMP3View(APIView):
 
     def post(self, request,*args, **kwargs):
         video_url = request.data.get('video_url')
+        orderid = request.data.get('order_id')
         
         user = request.user
         
@@ -670,14 +671,11 @@ class YouTubeToMP3View(APIView):
         except UserProfile.DoesNotExist:
             return Response({"error": "Foydalanuvchi topilmadi."}, status=status.HTTP_404_NOT_FOUND)
         
-        order = Orders.objects.create(user=user)
 
         try:
-            order_id = download_audio(video_url, order.order_id)
+            order_id = download_audio(video_url, orderid)
             
             if order_id:
-                order.order_id = order_id
-                order.save()
                 return Response({"order_id": str(order_id)}, status=status.HTTP_200_OK)
             
             return Response({"error": "Faylni yuklab bo‘lmadi"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
