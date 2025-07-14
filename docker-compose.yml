@@ -1,0 +1,27 @@
+
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: website
+      POSTGRES_USER: website
+      POSTGRES_PASSWORD: 9382
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=website
+      - DB_USER=website
+      - DB_PASSWORD=9382
+      - DB_HOST=db
+      - DB_PORT=5432
