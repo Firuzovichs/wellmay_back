@@ -16,4 +16,4 @@ RUN apt-get update && apt-get install -y ffmpeg \
 COPY . .
 
 # Django serverni 0.0.0.0 manzilida ishga tushirish
-CMD ["gunicorn", "website_back.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "website_back.wsgi:application", "--bind", "0.0.0.0:8001"]
