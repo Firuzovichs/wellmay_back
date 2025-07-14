@@ -7,8 +7,7 @@ services:
       POSTGRES_DB: website
       POSTGRES_USER: website
       POSTGRES_PASSWORD: 9382
-    ports:
-      - "5432:5432"
+
 
   web:
     build: .
