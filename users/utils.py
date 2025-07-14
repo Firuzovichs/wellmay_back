@@ -8,10 +8,10 @@ def download_audio(youtube_url, order_id):
         print("Yuklanmoqda...")
 
         output_file = f"{order_id}.%(ext)s"
-        yt_dlp_path = '/root/wellmay_backend/myprojectenv/bin/yt-dlp'
 
+        # `yt-dlp` ni tizimdan avtomatik chaqiradi
         subprocess.run([
-            yt_dlp_path,
+            'yt-dlp',
             '--no-check-certificate',
             '-f', 'bestaudio',
             '-o', f"musics/{output_file}",

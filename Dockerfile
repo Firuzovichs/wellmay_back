@@ -12,6 +12,8 @@ COPY requirements.txt .
 RUN apt-get update && apt-get install -y ffmpeg \
     && pip install --no-cache-dir -r requirements.txt
 
+RUN apt update && apt install -y yt-dlp
+
 # Loyiha fayllarini konteynerga nusxalash
 COPY . .
 
