@@ -11,7 +11,7 @@ services:
 
   web:
     build: .
-    command: gunicorn website_back.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn website_back.wsgi:application --bind 0.0.0.0:8001
     volumes:
       - .:/app
     ports:
