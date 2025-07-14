@@ -660,7 +660,7 @@ class CheckAndCreateOrder(APIView):
 class YouTubeToMP3View(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def post(self, request,*args, **kwargs):
         video_url = request.data.get('video_url')
         
         user = request.user

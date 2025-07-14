@@ -28,7 +28,7 @@ DEBUG = True
 SECURE_SSL_REDIRECT = False
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-ALLOWED_HOSTS = ["wellmay.uz", "www.wellmay.uz", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["wellmay.uz", "www.wellmay.uz", "127.0.0.1", "localhost","45.130.148.174"]
 CSRF_TRUSTED_ORIGINS = [
     "https://wellmay.uz",
     "https://www.wellmay.uz",
