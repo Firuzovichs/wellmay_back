@@ -25,10 +25,15 @@ SECRET_KEY = 'django-insecure-9*vq)-6ik8_5=$mt5@5#@uh8148luv-h^9&rb@xygj=u=fam8*
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+SECURE_SSL_REDIRECT = False
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 ALLOWED_HOSTS = ["wellmay.uz", "www.wellmay.uz", "127.0.0.1", "localhost"]
 
 
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
 # Application definition
 
 INSTALLED_APPS = [
