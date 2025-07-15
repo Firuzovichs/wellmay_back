@@ -19,7 +19,9 @@ from django.http import JsonResponse
 from pydub import AudioSegment
 import ffmpeg
 from rest_framework.authentication import TokenAuthentication
+import whisper
 
+model = whisper.load_model("tiny",device="cpu")
 
 class LastFourOrdersView(APIView):
     permission_classes = [IsAuthenticated]
@@ -654,9 +656,41 @@ class CheckAndCreateOrder(APIView):
                 return Response({"error": "Balansingizda yetarli reels yoki post yo'q."}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error": "Premium rejasi yo'q yoki tugagan."}, status=status.HTTP_400_BAD_REQUEST)
-        
 
-#Takes a YouTube link and converts it to MP3.
+
+ 
+
+class AudioToTextView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        order_id = request.data.get("order_id")
+        user = request.user
+
+        if not user or not order_id:
+            return Response({"error": "user_id va order_id kiritilishi shart"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Fayl yo'lini /musics/order_id.webm shaklida yaratamiz
+        file_path_webm = f"/root/wellmay_backend/musics/{order_id}.webm"
+        file_path_mp4 = f"/root/wellmay_backend/musics/{order_id}.mp4"
+
+        # .webm bor yoki yo'qligini tekshirish
+        if os.path.exists(file_path_webm):
+            file_path = file_path_webm
+        elif os.path.exists(file_path_mp4):  # Agar .webm bo‘lmasa, .mp4 ni tekshiradi
+            file_path = file_path_mp4
+        else:
+            return Response({"error": "Fayl mavjud emas"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            result = model.transcribe(file_path, language='ru')
+            
+            return Response({"text": result["text"]}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+       
+
 class YouTubeToMP3View(APIView):
     permission_classes = [IsAuthenticated]
 

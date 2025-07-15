@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y ffmpeg \
 
 RUN apt update && apt install -y yt-dlp
 
+RUN pip install git+https://github.com/openai/whisper.git
+
 # Loyiha fayllarini konteynerga nusxalash
 COPY . .
 

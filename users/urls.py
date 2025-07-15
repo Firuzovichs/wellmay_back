@@ -1,12 +1,13 @@
 
 from django.urls import path
-from .views import LastFourOrdersView,LoginView,VideosToReels,ImageToVideo,TextToSpeechAPIView,GenerateImageReelsView,PostToPrompt,SenarioToPrompt,UserCreateAPIView,YouTubeToMP3View,CheckAndCreateOrder,TextToInstagramPostsView,GenerateImageView,PostToSenario
+from .views import AudioToTextView,LastFourOrdersView,LoginView,VideosToReels,ImageToVideo,TextToSpeechAPIView,GenerateImageReelsView,PostToPrompt,SenarioToPrompt,UserCreateAPIView,YouTubeToMP3View,CheckAndCreateOrder,TextToInstagramPostsView,GenerateImageView,PostToSenario
 
 
 urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='jwt-login'),
     path('auth/signin/', UserCreateAPIView.as_view(), name='sign-in'),
     path('convert/mp3/', YouTubeToMP3View.as_view(), name='music'),
+    path('convert/text/', AudioToTextView.as_view(), name='text'),
     path('check/create/', CheckAndCreateOrder.as_view(), name='check-status-order'),
     path('convert/post/', TextToInstagramPostsView.as_view(), name='post'),
     path('convert/image-post/', GenerateImageView.as_view(), name='image-post'),
