@@ -670,8 +670,8 @@ class AudioToTextView(APIView):
             return Response({"error": "user_id va order_id kiritilishi shart"}, status=status.HTTP_400_BAD_REQUEST)
         
         # Fayl yo'lini /musics/order_id.webm shaklida yaratamiz
-        file_path_webm = f"/root/wellmay_backend/musics/{order_id}.webm"
-        file_path_mp4 = f"/root/wellmay_backend/musics/{order_id}.mp4"
+        file_path_webm = f"/root/wellmay_back/musics/{order_id}.webm"
+        file_path_mp4 = f"/root/wellmay_back/musics/{order_id}.mp4"
 
         # .webm bor yoki yo'qligini tekshirish
         if os.path.exists(file_path_webm):
