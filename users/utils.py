@@ -8,19 +8,29 @@ def download_audio(youtube_url, order_id):
         print("Yuklanmoqda...")
 
         output_file = f"{order_id}.%(ext)s"
-
-        # `yt-dlp` ni tizimdan avtomatik chaqiradi
-        subprocess.run([
+        cmd = [
             'yt-dlp',
             '--no-check-certificate',
-            '-f', 'bestaudio',
-            '-o', f"musics/{output_file}",
+            '--no-playlist',
+            '--extract-audio',
+            '--audio-format', 'mp3',
+            '--audio-quality', '0',
+            '--format', 'bestaudio/best',
+            '-o', f'musics/{output_file}',
             youtube_url
-        ], check=True)
+        ]
 
-        print(f"Yuklab olindi: Order ID - {order_id}")
+        print("Command:", ' '.join(cmd))  # debug uchun
+
+        result = subprocess.run(cmd, capture_output=True, text=True)
+
+        if result.returncode != 0:
+            print("Xatolik:", result.stderr)
+            return None
+
+        print("✅ Yuklab olindi:", result.stdout)
         return order_id
 
     except Exception as e:
-        print(f"Xatolik yuz berdi: {e}")
+        print(f"❌ Umumiy xatolik: {e}")
         return None
