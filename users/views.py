@@ -676,8 +676,8 @@ class AudioToTextView(APIView):
             logger.warning("User yoki order_id yo'q")
             return Response({"error": "user_id va order_id kiritilishi shart"}, status=status.HTTP_400_BAD_REQUEST)
         
-        file_path_webm = f"/root/wellmay_back/musics/{order_id}.webm"
-        file_path_mp4 = f"/root/wellmay_back/musics/{order_id}.mp4"
+        file_path_webm = f"/app/musics/{order_id}.webm"
+        file_path_mp4 = f"/app/musics/{order_id}.mp4"
 
         logger.info(f"Tekshirilmoqda: {file_path_webm}")
         if os.path.exists(file_path_webm):
