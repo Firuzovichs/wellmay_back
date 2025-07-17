@@ -20,6 +20,9 @@ from pydub import AudioSegment
 import ffmpeg
 from rest_framework.authentication import TokenAuthentication
 import whisper
+import logging
+
+logger = logging.getLogger(__name__)
 
 model = whisper.load_model("tiny",device="cpu")
 
@@ -658,47 +661,46 @@ class CheckAndCreateOrder(APIView):
             return Response({"error": "Premium rejasi yo'q yoki tugagan."}, status=status.HTTP_400_BAD_REQUEST)
 
 
- 
-
 class AudioToTextView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        print("POST request keldi")
+        logger.info("POST request keldi")
         order_id = request.data.get("order_id")
         user = request.user
 
-        print(f"User: {user}")
-        print(f"Order ID: {order_id}")
+        logger.debug(f"User: {user}")
+        logger.debug(f"Order ID: {order_id}")
 
         if not user or not order_id:
-            print("User yoki order_id yo'q")
+            logger.warning("User yoki order_id yo'q")
             return Response({"error": "user_id va order_id kiritilishi shart"}, status=status.HTTP_400_BAD_REQUEST)
         
         file_path_webm = f"/root/wellmay_back/musics/{order_id}.webm"
         file_path_mp4 = f"/root/wellmay_back/musics/{order_id}.mp4"
 
-        print(f"Tekshirilmoqda: {file_path_webm}")
+        logger.info(f"Tekshirilmoqda: {file_path_webm}")
         if os.path.exists(file_path_webm):
             file_path = file_path_webm
-            print(f".webm fayl topildi: {file_path}")
+            logger.info(f".webm fayl topildi: {file_path}")
         elif os.path.exists(file_path_mp4):
             file_path = file_path_mp4
-            print(f".mp4 fayl topildi: {file_path}")
+            logger.info(f".mp4 fayl topildi: {file_path}")
         else:
-            print("Fayl topilmadi")
+            logger.error("Fayl topilmadi")
             return Response({"error": "Fayl mavjud emas"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            print("Transkripsiya jarayoni boshlandi...")
+            logger.info("Transkripsiya jarayoni boshlandi...")
             result = model.transcribe(file_path, language='ru')
-            print("Transkripsiya yakunlandi:", result["text"])
+            logger.info("Transkripsiya yakunlandi")
+            logger.debug(f"Natija: {result['text']}")
             return Response({"text": result["text"]}, status=status.HTTP_200_OK)
 
         except Exception as e:
-            print("Xatolik yuz berdi:", str(e))
+            logger.exception("Transkripsiya vaqtida xatolik yuz berdi")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        
 class YouTubeToMP3View(APIView):
     permission_classes = [IsAuthenticated]
 
