@@ -700,32 +700,39 @@ class AudioToTextView(APIView):
         except Exception as e:
             logger.exception("Transkripsiya vaqtida xatolik yuz berdi")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-class YouTubeToMP3View(APIView):
+     class YouTubeToMP3View(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request,*args, **kwargs):
+    def post(self, request, *args, **kwargs):
         video_url = request.data.get('video_url')
         orderid = request.data.get('order_id')
-        
         user = request.user
-        
+
+        logger.info("POST so‘rovi kelib tushdi: YouTubeToMP3View")
+        logger.info(f"User: {user}, Video URL: {video_url}, Order ID: {orderid}")
+
+        # Foydalanuvchini tekshiramiz
         try:
             user_profile = UserProfile.objects.get(user=user)
+            logger.info(f"UserProfile topildi: {user_profile.id}")
         except UserProfile.DoesNotExist:
+            logger.error("Foydalanuvchi profili topilmadi")
             return Response({"error": "Foydalanuvchi topilmadi."}, status=status.HTTP_404_NOT_FOUND)
-        
 
+        # Yuklab olish jarayoni
         try:
             order_id = download_audio(video_url, orderid)
-            
+
             if order_id:
+                logger.info(f"Audio muvaffaqiyatli yuklab olindi: {order_id}")
                 return Response({"order_id": str(order_id)}, status=status.HTTP_200_OK)
             
+            logger.error("Faylni yuklab bo‘lmadi")
             return Response({"error": "Faylni yuklab bo‘lmadi"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            logger.exception(f"MP3 yuklashda xatolik: {str(e)}")
+            return Response({"error": "Ichki xatolik yuz berdi"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 #SIGN IN 
