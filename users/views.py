@@ -700,7 +700,7 @@ class AudioToTextView(APIView):
         except Exception as e:
             logger.exception("Transkripsiya vaqtida xatolik yuz berdi")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-     class YouTubeToMP3View(APIView):
+class YouTubeToMP3View(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
